@@ -6,11 +6,11 @@ node_js:
 os:
     - osx
 
-before_install:
-    - chmod +x /Users/travis/build/codearoni/zxp-sign-cmd/bin/
-
 install:
     - npm install
+
+before_script:
+    - chmod +x /Users/travis/build/codearoni/zxp-sign-cmd/bin/
 
 script:
     - npm run test-ci
