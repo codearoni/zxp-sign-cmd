@@ -1,0 +1,32 @@
+{
+  "name": "zxp-sign-cmd",
+  "version": "0.0.1",
+  "description": "A wrapper for Adobe's extension signer",
+  "main": "index.js",
+  "scripts": {
+    "hint": "jshint ./index.js",
+    "test": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec",
+    "test-ci": "npm run hint && npm run test"
+  },
+  "engines": {
+    "node": ">=4.0.0"
+  },
+  "keywords": [
+    "adobe",
+    "zxp",
+    "extension"
+  ],
+  "author": "codearoni",
+  "license": "MIT",
+  "dependencies": {
+    "zxp-provider": "^1.0.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "coveralls": "^2.11.9",
+    "istanbul": "^0.4.3",
+    "jshint": "^2.9.2",
+    "mocha": "^2.4.5",
+    "mocha-lcov-reporter": "^1.2.0"
+  }
+}
