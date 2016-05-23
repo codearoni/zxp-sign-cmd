@@ -78,7 +78,7 @@ module.exports = {
         if (options.validityDays) {
             cmd = insertSpaces(cmd, '-validityDays', options.validityDays);
         }
-        
+
         exec(cmd, function (error, stdout, stderr) {
             if (error) {
                 callback(error);
@@ -113,7 +113,7 @@ module.exports = {
         if (options.addCerts) {
             cmd = insertSpaces(cmd, '-addCerts', options.addCerts);
         }
-
+        
         exec(cmd, function (error, stdout, stderr) {
             if (error) {
                 callback(error);
