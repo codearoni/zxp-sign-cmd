@@ -37,4 +37,14 @@ describe('zxpSignCmd.verify', function () {
             done();
         });
     });
+
+    it('Should add info to the verification', function (done) {
+        verifyOptions.info = true;
+
+        zxpSignCmd.verify(verifyOptions, function (error, result) {
+
+            expect(error).to.be.a('null');
+            done();
+        });
+    });
 });
