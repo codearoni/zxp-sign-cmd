@@ -9,9 +9,6 @@ os:
 install:
     - npm install
 
-before_script:
-    - chmod +x  /home/travis/build/codearoni/zxp-sign-cmd/ -R
-
 script:
     - npm run test-ci
 
