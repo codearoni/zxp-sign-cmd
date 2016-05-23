@@ -1,17 +1,25 @@
+/* globals beforeEach, it, describe */
 'use strict';
 
 var path = require('path'),
     zxpSignCmd = require(path.join(__dirname, '..', 'index.js')),
-    expect = require('chai').expect;
+    expect = require('chai').expect,
+    testPassword = 'testPs',
+    testCertName = 'testCert',
+    testCertLoc = path.join(__dirname, '..', 'bin', testCertName + '.p12'),
+    testZxpName = 'test',
+    testZxpLoc = path.join(__dirname, '..', 'bin', testZxpName + '.zxp');
 
 describe('zxpSignCmd.sign', function () {
     var options = {};
 
     beforeEach(function () {
-        options.input = path.join(__dirname, '..', 'bin', 'test.zxp');
-        options.output = path.join(__dirname, 'bin');
-        options.cert = path.join(__dirname, '..', 'bin', 'test.p12');
-        options.password = 'testps';
+        options  = {
+            input: path.join(__dirname, 'ext'),
+            output: testZxpLoc,
+            cert: testCertLoc,
+            password: testPassword
+        };
     });
 
     it('Should throw an error because input is not provided', function (done) {
@@ -20,6 +28,7 @@ describe('zxpSignCmd.sign', function () {
 
             expect(error).to.be.an('error');
             expect(error.message).to.equal('input property is required');
+            expect(result).to.be.a('undefined');
             done();
         });
     });
@@ -30,6 +39,7 @@ describe('zxpSignCmd.sign', function () {
 
             expect(error).to.be.an('error');
             expect(error.message).to.equal('output property is required');
+            expect(result).to.be.a('undefined');
             done();
         });
     });
@@ -40,6 +50,7 @@ describe('zxpSignCmd.sign', function () {
 
             expect(error).to.be.an('error');
             expect(error.message).to.equal('cert property is required');
+            expect(result).to.be.a('undefined');
             done();
         });
     });
@@ -50,6 +61,16 @@ describe('zxpSignCmd.sign', function () {
 
             expect(error).to.be.an('error');
             expect(error.message).to.equal('password property is required');
+            expect(result).to.be.a('undefined');
+            done();
+        });
+    });
+
+    it('Should generate a zxp package using the example extension', function (done) {
+
+        zxpSignCmd.sign(options, function (error, result) {
+            expect(error).to.be.a('null');
+            expect(result).to.equal('Signed successfully\r\n');
             done();
         });
     });

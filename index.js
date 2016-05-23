@@ -32,6 +32,7 @@ module.exports = {
 
         if (cbError) {
             callback(cbError);
+            return;
         }
 
         cmd = insertSpaces(zxp, '-sign', options.input, options.output, options.cert, options.password);
@@ -43,6 +44,7 @@ module.exports = {
         exec(cmd, function (error, stdout, stderr) {
             if (error) {
                 callback(error);
+                return;
             }
             if (stderr) {
                 console.log(stderr);
@@ -59,6 +61,7 @@ module.exports = {
 
         if (cbError) {
             callback(cbError);
+            return;
         }
 
         cmd = insertSpaces(zxp, '-selfSignedCert', options.country, options.province, options.org, options.name, options.password, options.output);
@@ -75,10 +78,11 @@ module.exports = {
         if (options.validityDays) {
             cmd = insertSpaces(cmd, '-validityDays', options.validityDays);
         }
-
+        
         exec(cmd, function (error, stdout, stderr) {
             if (error) {
                 callback(error);
+                return;
             }
             if (stderr) {
                 console.log(stderr);
@@ -95,6 +99,7 @@ module.exports = {
 
         if (cbError) {
             callback(cbError);
+            return;
         }
 
         cmd = insertSpaces(zxp, '-verify', options.input);
@@ -112,6 +117,7 @@ module.exports = {
         exec(cmd, function (error, stdout, stderr) {
             if (error) {
                 callback(error);
+                return;
             }
             if (stderr) {
                 console.log(stderr);
