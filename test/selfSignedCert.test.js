@@ -87,14 +87,4 @@ describe('zxpSignCmd.selfSignedCert', function () {
             done();
         });
     });
-
-    it('Should generate a self-signed cert', function (done) {
-        certOptions.country = 'us';
-        zxpSignCmd.selfSignedCert(certOptions, function (error, result) {
-
-            expect(error).to.be.a('null');
-            expect(result).to.equal('Self-signed certificate generated successfully\r\n');
-            done();
-        });
-    });
 });

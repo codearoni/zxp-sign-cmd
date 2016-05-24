@@ -6,7 +6,7 @@ var path = require('path'),
     expect = require('chai').expect,
     testPassword = 'testPs',
     testCertName = 'testCert',
-    testCertLoc = path.join(__dirname, '.', 'bin', testCertName + '.p12'),
+    testCertLoc = path.join(__dirname, '..', 'bin', testCertName + '.p12'),
     testZxpName = 'test',
     testZxpLoc = path.join(__dirname, '..', 'bin', testZxpName + '.zxp');
 
@@ -62,15 +62,6 @@ describe('zxpSignCmd.sign', function () {
             expect(error).to.be.an('error');
             expect(error.message).to.equal('password property is required');
             expect(result).to.be.a('undefined');
-            done();
-        });
-    });
-
-    it('Should generate a zxp package using the example extension', function (done) {
-
-        zxpSignCmd.sign(options, function (error, result) {
-            expect(error).to.be.a('null');
-            expect(result).to.equal('Signed successfully\r\n');
             done();
         });
     });

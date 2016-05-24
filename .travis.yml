@@ -10,9 +10,6 @@ install:
     - npm install -g npm@latest
     - npm install
 
-before_script:
-    - chmod -R a+x .
-
 script:
     - npm run test-ci
 

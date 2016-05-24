@@ -6,7 +6,7 @@ var path = require('path'),
     expect = require('chai').expect,
     testPassword = 'testPs',
     testCertName = 'testCert',
-    testCertLoc = path.join(__dirname, '.', 'bin', testCertName + '.p12'),
+    testCertLoc = path.join(__dirname, '..', 'bin', testCertName + '.p12'),
     testZxpName = 'test',
     testZxpLoc = path.join(__dirname, '..', 'bin', testZxpName + '.zxp');
 
@@ -25,25 +25,6 @@ describe('zxpSignCmd.verify', function () {
 
             expect(error).to.be.an('error');
             expect(result).to.be.a('undefined');
-            done();
-        });
-    });
-
-    it('Should verify the packaged zxp', function (done) {
-
-        zxpSignCmd.verify(verifyOptions, function (error, result) {
-
-            expect(error).to.be.a('null');
-            done();
-        });
-    });
-
-    it('Should add info to the verification', function (done) {
-        verifyOptions.info = true;
-
-        zxpSignCmd.verify(verifyOptions, function (error, result) {
-
-            expect(error).to.be.a('null');
             done();
         });
     });
