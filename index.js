@@ -1,6 +1,8 @@
 'use strict';
 
 var zxp = require('zxp-provider').bin,
+    path = require('path'),
+    fs = require('graceful-fs'),
     exec = require('child_process').exec;
 
 var insertSpaces = function () {
@@ -23,6 +25,20 @@ var validateOptions = function (options, requirements) {
     return err;
 };
 
+var buildOutputPath = function (output, callback) {
+    fs.mkdir(path.dirname(output), function (error) {
+        if (error) {
+            if (error.code === 'EEXIST') {
+                callback(null);
+            } else {
+                callback(error);
+            }
+        } else {
+            callback(null);
+        }
+    });
+};
+
 module.exports = {
     sign: function (options, callback) {
         var cbError = null,
@@ -41,16 +57,23 @@ module.exports = {
             cmd = insertSpaces(cmd, '-tsa', options.timestamp);
         }
 
-        exec(cmd, function (error, stdout, stderr) {
+        buildOutputPath(options.output, function (error) {
             if (error) {
                 callback(error);
                 return;
-            }
-            if (stderr) {
-                console.log(stderr);
-            }
+            } else {
+                exec(cmd, function (error, stdout, stderr) {
+                    if (error) {
+                        callback(error);
+                        return;
+                    }
+                    if (stderr) {
+                        console.log(stderr);
+                    }
 
-            callback(null, stdout);
+                    callback(null, stdout);
+                });
+            }
         });
     },
     selfSignedCert: function (options, callback) {
@@ -79,16 +102,23 @@ module.exports = {
             cmd = insertSpaces(cmd, '-validityDays', options.validityDays);
         }
 
-        exec(cmd, function (error, stdout, stderr) {
+        buildOutputPath(options.output, function (error) {
             if (error) {
                 callback(error);
                 return;
-            }
-            if (stderr) {
-                console.log(stderr);
-            }
+            } else {
+                exec(cmd, function (error, stdout, stderr) {
+                    if (error) {
+                        callback(error);
+                        return;
+                    }
+                    if (stderr) {
+                        console.log(stderr);
+                    }
 
-            callback(null, stdout);
+                    callback(null, stdout);
+                });
+            }
         });
     },
     verify: function (options, callback) {
@@ -113,7 +143,7 @@ module.exports = {
         if (options.addCerts) {
             cmd = insertSpaces(cmd, '-addCerts', options.addCerts);
         }
-        
+
         exec(cmd, function (error, stdout, stderr) {
             if (error) {
                 callback(error);

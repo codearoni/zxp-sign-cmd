@@ -19,6 +19,7 @@
   "author": "codearoni",
   "license": "MIT",
   "dependencies": {
+    "graceful-fs": "^4.1.4",
     "zxp-provider": "^1.0.1"
   },
   "devDependencies": {
