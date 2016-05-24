@@ -13,7 +13,7 @@ install:
 before_script:
     - mkdir -p ./bin
     - chmod a+x ./bin
-    - chmod a+x ./node_modules -R
+    - chmod -R a+x ./node_modules
 
 script:
     - npm run test-ci
