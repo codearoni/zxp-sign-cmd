@@ -11,6 +11,8 @@ install:
     - npm install
 
 before_script:
+    - mkdir ./bin
+    - chmod a+x ./bin
     - chmod a+x ./node_modules/zxp-provider/bin/osx/ZXPSignCmd
 
 script:

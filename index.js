@@ -79,7 +79,7 @@ module.exports = {
     selfSignedCert: function (options, callback) {
         var cbError = null,
             cmd;
-        console.log(zxp);
+
         cbError = validateOptions(options, ['country', 'province', 'org', 'name', 'password', 'output']);
 
         if (cbError) {
