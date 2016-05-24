@@ -18,8 +18,8 @@ var zxpSignCmd = require('zxp-sign-cmd');
 
 There are functions for all 3 operations: sign, selfSignedCert, and verify.
 Each function takes an options object as its first parameter. See the property tables for the appropriate function below.
-The second parameter is a callback, that takes an error and result parameter. The error will always be null if the function succeeds. In the event that an error occurs, an Error object will be returned.
-The result will always be a string, and will contain the stdout provided by ZXPSignCmd. In the event that the task fails, result will be undefined.
+The second parameter is a callback, that takes an error and result argument. The error will always be null if the function succeeds. In the event that an error occurs, an Error object will be returned.
+The result will be a string and will contain the stdout provided by ZXPSignCmd (if the task succeeds). In the event that the task fails, result will be undefined.
 
 #### sign
 Options
