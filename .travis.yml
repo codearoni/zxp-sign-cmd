@@ -1,5 +1,4 @@
 language: node_js
-sudo: true
 node_js:
     - "6"
     - "4"
@@ -14,7 +13,7 @@ install:
 before_script:
     - mkdir -p ./bin
     - chmod a+x ./bin
-    - chmod a+x ./node_modules/zxp-provider/bin/osx/ZXPSignCmd
+    - chmod a+x ./node_modules -R
 
 script:
     - npm run test-ci
