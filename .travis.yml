@@ -6,13 +6,11 @@ node_js:
 os:
     - osx
 
-sudo: required
-
 install:
     - npm install
 
 before_script:
-    - chmod +x /Users/travis/build/codearoni/zxp-sign-cmd/bin/
+    - chmod a+x ./node_modules/zxp-provider/bin/osx/ZXPSignCmd
 
 script:
     - npm run test-ci
