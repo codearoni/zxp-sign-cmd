@@ -19,6 +19,10 @@
     "sign"
   ],
   "author": "codearoni",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/codearoni/zxp-sign-cmd"   
+  },
   "license": "MIT",
   "dependencies": {
     "graceful-fs": "^4.1.4",
