@@ -80,3 +80,7 @@ zxpSignCmd.verify(options, function (error, result) {
 ```
 ## Notes
 * Code coverage is low because the ZXPSignCmd cannot run in the Travis-CI environment. I imagine this is due to an OS compatiblity issue. If you would like to run see more complete code coverage, pull the repo and execute "npm run test".
+
+* zxp-sign-cmd v0.1.0 - ZxpSignCmd v3.0.30
+
+* zxp-sign-cmd v0.2.0 - ZxpSignCmd v4.0.7
