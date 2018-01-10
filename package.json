@@ -1,6 +1,6 @@
 {
   "name": "zxp-sign-cmd",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A wrapper for Adobe's extension signer",
   "main": "index.js",
   "scripts": {
@@ -21,19 +21,19 @@
   "author": "codearoni",
   "repository": {
     "type": "git",
-    "url": "https://github.com/codearoni/zxp-sign-cmd"   
+    "url": "https://github.com/codearoni/zxp-sign-cmd"
   },
   "license": "MIT",
   "dependencies": {
-    "graceful-fs": "^4.1.4",
-    "zxp-provider": "^1.1.0"
+    "graceful-fs": "^4.1.11",
+    "zxp-provider": "^1.1.3"
   },
   "devDependencies": {
-    "chai": "^3.5.0",
-    "coveralls": "^2.11.9",
+    "chai": "^4.1.2",
+    "coveralls": "^3.0.0",
     "istanbul": "^0.4.3",
     "jshint": "^2.9.2",
-    "mocha": "^2.4.5",
+    "mocha": "^4.1.0",
     "mocha-lcov-reporter": "^1.2.0"
   }
 }
