@@ -47,7 +47,7 @@ var wrapStringsInQuotes = function(options) {
             options[property] = string;
         }
     }
-}
+};
 
 var buildOutputPath = function (output, callback) {
     fs.mkdir(path.dirname(output), function (error) {
