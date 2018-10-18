@@ -25,6 +25,30 @@ var validateOptions = function (options, requirements) {
     return err;
 };
 
+var wrapStringsInQuotes = function(options) {
+    var string,
+        property;
+
+    for (property in options) {
+        if (!options.hasOwnProperty(property)) {
+            continue;
+        }
+
+        string = options[property];
+
+        if (typeof(string) !== 'string') {
+            continue;
+        }
+
+        string = string.trim();
+
+        if (string[0] !== '"' && string.slice(-1) !== '"') {
+            string = '"' + string + '"';
+            options[property] = string;
+        }
+    }
+}
+
 var buildOutputPath = function (output, callback) {
     fs.mkdir(path.dirname(output), function (error) {
         if (error) {
@@ -51,17 +75,19 @@ module.exports = {
             return;
         }
 
-        cmd = insertSpaces(zxp, '-sign', options.input, options.output, options.cert, options.password);
-
-        if (options.timestamp) {
-            cmd = insertSpaces(cmd, '-tsa', options.timestamp);
-        }
-
         buildOutputPath(options.output, function (error) {
             if (error) {
                 callback(error);
                 return;
             } else {
+                wrapStringsInQuotes(options);
+
+                cmd = insertSpaces(zxp, '-sign', options.input, options.output, options.cert, options.password);
+
+                if (options.timestamp) {
+                    cmd = insertSpaces(cmd, '-tsa', options.timestamp);
+                }
+
                 exec(cmd, function (error, stdout, stderr) {
                     if (error) {
                         callback(error);
@@ -87,26 +113,28 @@ module.exports = {
             return;
         }
 
-        cmd = insertSpaces(zxp, '-selfSignedCert', options.country, options.province, options.org, options.name, options.password, options.output);
-
-        if (options.locality) {
-            cmd = insertSpaces(cmd, '-locality', options.locality);
-        }
-        if (options.orgUnit) {
-            cmd = insertSpaces(cmd, '-orgUnit', options.orgUnit);
-        }
-        if (options.email) {
-            cmd = insertSpaces(cmd, '-email', options.email);
-        }
-        if (options.validityDays) {
-            cmd = insertSpaces(cmd, '-validityDays', options.validityDays);
-        }
-
         buildOutputPath(options.output, function (error) {
             if (error) {
                 callback(error);
                 return;
             } else {
+                wrapStringsInQuotes(options);
+
+                cmd = insertSpaces(zxp, '-selfSignedCert', options.country, options.province, options.org, options.name, options.password, options.output);
+
+                if (options.locality) {
+                    cmd = insertSpaces(cmd, '-locality', options.locality);
+                }
+                if (options.orgUnit) {
+                    cmd = insertSpaces(cmd, '-orgUnit', options.orgUnit);
+                }
+                if (options.email) {
+                    cmd = insertSpaces(cmd, '-email', options.email);
+                }
+                if (options.validityDays) {
+                    cmd = insertSpaces(cmd, '-validityDays', options.validityDays);
+                }
+
                 exec(cmd, function (error, stdout, stderr) {
                     if (error) {
                         callback(error);
