@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "A wrapper for Adobe's extension signer",
   "main": "index.js",
+  "bin": {
+    "zxpsign": "./zxp-sign-cli.js"
+  },
   "scripts": {
     "hint": "jshint ./index.js",
     "test-no-exe": "istanbul cover ./node_modules/mocha/bin/_mocha ./test/selfSignedCert.test.js ./test/sign.test.js ./test/verify.test.js --report lcovonly -- -R spec",
@@ -26,7 +29,9 @@
   },
   "license": "MIT",
   "dependencies": {
+    "commander": "^2.19.0",
     "graceful-fs": "^4.1.11",
+    "prompt": "^1.0.0",
     "zxp-provider": "^1.2.0"
   },
   "devDependencies": {
