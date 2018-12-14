@@ -4,12 +4,12 @@
   "description": "A wrapper for Adobe's extension signer",
   "main": "index.js",
   "bin": {
-    "zxpsign": "./zxp-sign-cli.js"
+    "zxpsign": "cli_zxpsign.js"
   },
   "scripts": {
     "hint": "jshint ./index.js",
     "test-no-exe": "istanbul cover ./node_modules/mocha/bin/_mocha ./test/selfSignedCert.test.js ./test/sign.test.js ./test/verify.test.js --report lcovonly -- -R spec",
-    "test": "istanbul cover ./node_modules/mocha/bin/_mocha ./test/selfSignedCert.test.js ./test/sign.test.js ./test/verify.test.js ./test/exe.test.js --report lcovonly -- -R spec",
+    "test": "npm link && istanbul cover ./node_modules/mocha/bin/_mocha ./test/selfSignedCert.test.js ./test/sign.test.js ./test/verify.test.js ./test/exe.test.js ./test/cliSign.test.js --report lcovonly -- -R spec",
     "test-ci": "npm run hint && npm run test-no-exe"
   },
   "engines": {
@@ -40,6 +40,7 @@
     "istanbul": "^0.4.3",
     "jshint": "^2.9.2",
     "mocha": "^5.0.4",
-    "mocha-lcov-reporter": "^1.2.0"
+    "mocha-lcov-reporter": "^1.2.0",
+    "node-cmd": "^3.0.0"
   }
 }
