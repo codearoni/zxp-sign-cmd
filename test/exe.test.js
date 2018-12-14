@@ -43,7 +43,7 @@ describe('zxpSignCmd exe tests', function () {
         zxpSignCmd.selfSignedCert(certOptions, function (error, result) {
 
             expect(error).to.be.a('null');
-            expect(result).to.equal('Self-signed certificate generated successfully\r\n');
+            expect(result).to.match(/Self-signed certificate generated successfully/);
             done();
         });
     });
@@ -52,7 +52,7 @@ describe('zxpSignCmd exe tests', function () {
 
         zxpSignCmd.sign(options, function (error, result) {
             expect(error).to.be.a('null');
-            expect(result).to.equal('Signed successfully\r\n');
+            expect(result).to.match(/Signed successfully/);
             done();
         });
     });
