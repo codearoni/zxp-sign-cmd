@@ -31,7 +31,6 @@
   "dependencies": {
     "commander": "^2.19.0",
     "graceful-fs": "^4.1.11",
-    "prompt": "^1.0.0",
     "zxp-provider": "^1.2.0"
   },
   "devDependencies": {

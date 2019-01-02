@@ -79,6 +79,21 @@ zxpSignCmd.verify(options, function (error, result) {
     
 });
 ```
+
+#### Command Line Interface (zxpsign)
+
+    zxpsign -i path/to/dir -o path/to/file.zxp -c path/to/cert.p12 -p
+
+**CLI Options**
+
+    -v, --version         output the version number
+    -i, --input [value]   Directory that will be compiled into the packaged zxp file.
+    -o, --output [value]  Path and filename that the zxp will be exported to.
+    -c, --cert [value]    Path and filename of the .p12 certificate that will be used to sign the extension.
+    -t, --tsa [value]     URL for a timestamp server.
+    -p, --pass [value]    Password for P12 certificate.
+    -h, --help            output usage information
+
 ## Notes
 * Code coverage is low because the ZXPSignCmd cannot run in the Travis-CI environment. I imagine this is due to an OS compatiblity issue. If you would like to run see more complete code coverage, pull the repo and execute "npm run test".
 
