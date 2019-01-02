@@ -34,6 +34,7 @@ function sign() {
   });
 };
 
+// We need a --pass flag to get a prompt
 if( typeof zxpSignCli.pass === 'boolean' ) {
   rl.stdoutMuted = true;
   rl.question('p12 password: ', (pass) => {
