@@ -9,20 +9,8 @@ var mkdir = function (dirPath, mode, callback) {
     fs.mkdir(dirPath, mode, function (error) {
         if (error && error.code === 'ENOENT') {
             mkdir(path.dirname(dirPath), mode, mkdir.bind(this, dirPath, mode, callback));
-        } else if (callback) {
-            callback(error);
-        }
+        } else if (callback) callback(error);
     });
-};
-
-var insertSpaces = function () {
-    var builtString = '',
-    args = Array.prototype.slice.call(arguments);
-
-    args.forEach(function(val) {
-        builtString = builtString + val + ' ';
-    });
-    return builtString;
 };
 
 var validateOptions = function (options, requirements) {
@@ -61,10 +49,10 @@ module.exports = {
             return;
         }
 
-        cmd = insertSpaces(zxp, '-sign', options.input, options.output, options.cert, options.password);
+        cmd = [zxp, '-sign', options.input, options.output, options.cert, options.password].join(' ');
 
         if (options.timestamp) {
-            cmd = insertSpaces(cmd, '-tsa', options.timestamp);
+            cmd = [cmd, '-tsa', options.timestamp].join(' ');
         }
 
         buildOutputPath(options.output, function (error) {
@@ -97,19 +85,19 @@ module.exports = {
             return;
         }
 
-        cmd = insertSpaces(zxp, '-selfSignedCert', options.country, options.province, options.org, options.name, options.password, options.output);
+        cmd = [zxp, '-selfSignedCert', options.country, options.province, options.org, options.name, options.password, options.output].join(' ');
 
         if (options.locality) {
-            cmd = insertSpaces(cmd, '-locality', options.locality);
+            cmd = [cmd, '-locality', options.locality].join(' ');
         }
         if (options.orgUnit) {
-            cmd = insertSpaces(cmd, '-orgUnit', options.orgUnit);
+            cmd = [cmd, '-orgUnit', options.orgUnit].join(' ');
         }
         if (options.email) {
-            cmd = insertSpaces(cmd, '-email', options.email);
+            cmd = [cmd, '-email', options.email].join(' ');
         }
         if (options.validityDays) {
-            cmd = insertSpaces(cmd, '-validityDays', options.validityDays);
+            cmd = [cmd, '-validityDays', options.validityDays].join(' ');
         }
 
         buildOutputPath(options.output, function (error) {
@@ -142,16 +130,16 @@ module.exports = {
             return;
         }
 
-        cmd = insertSpaces(zxp, '-verify', options.input);
+        cmd = [zxp, '-verify', options.input].join(' ');
 
         if (options.info) {
-            cmd = insertSpaces(cmd, '-certInfo');
+            cmd = [cmd, '-certInfo'].join(' ');
         }
         if (options.skipChecks) {
-            cmd = insertSpaces(cmd, '-skipOnlineRevocationChecks');
+            cmd = [cmd, '-skipOnlineRevocationChecks'].join(' ');
         }
         if (options.addCerts) {
-            cmd = insertSpaces(cmd, '-addCerts', options.addCerts);
+            cmd = [cmd, '-addCerts', options.addCerts].join(' ');
         }
 
         exec(cmd, function (error, stdout, stderr) {
