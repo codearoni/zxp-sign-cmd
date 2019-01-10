@@ -5,6 +5,16 @@ var zxp = require('zxp-provider').bin,
     fs = require('graceful-fs'),
     exec = require('child_process').exec;
 
+function mkdir(dirPath, mode, callback) {
+    fs.mkdir(dirPath, mode, function (error) {
+        if (error && error.code == 'ENOENT') {
+            mkdir(path.dirname(dirPath), mode, mkdir.bind(this, dirPath, mode, callback));
+        } else if (callback) {
+            callback(error);
+        };
+    });
+};
+
 var insertSpaces = function () {
     var builtString = '',
     args = Array.prototype.slice.call(arguments);
@@ -26,7 +36,7 @@ var validateOptions = function (options, requirements) {
 };
 
 var buildOutputPath = function (output, callback) {
-    fs.mkdir(path.dirname(output), function (error) {
+    mkdir(path.dirname(output), function (error) {
         if (error) {
             if (error.code === 'EEXIST') {
                 callback(null);
