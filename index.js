@@ -5,13 +5,13 @@ var zxp = require('zxp-provider').bin,
     fs = require('graceful-fs'),
     exec = require('child_process').exec;
 
-function mkdir(dirPath, mode, callback) {
+var mkdir = function (dirPath, mode, callback) {
     fs.mkdir(dirPath, mode, function (error) {
-        if (error && error.code == 'ENOENT') {
+        if (error && error.code === 'ENOENT') {
             mkdir(path.dirname(dirPath), mode, mkdir.bind(this, dirPath, mode, callback));
         } else if (callback) {
             callback(error);
-        };
+        }
     });
 };
 
