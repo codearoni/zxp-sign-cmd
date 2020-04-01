@@ -1,17 +1,17 @@
 /* globals beforeEach, it, describe */
 'use strict';
 
-var path = require('path'),
-    zxpSignCmd = require(path.join(__dirname, '..', 'index.js')),
-    expect = require('chai').expect,
-    testPassword = 'testPs',
-    testCertName = 'testCert',
-    testCertLoc = path.join(__dirname, '..', 'bin', testCertName + '.p12'),
-    testZxpName = 'test',
-    testZxpLoc = path.join(__dirname, '..', 'bin', testZxpName + '.zxp');
+const path = require('path');
+const zxpSignCmd = require(path.join(__dirname, '..', 'index.js'));
+const expect = require('chai').expect;
+const testPassword = 'testPs';
+const testCertName = 'testCert';
+const testCertLoc = path.join(__dirname, '..', 'bin', testCertName + '.p12');
+const testZxpName = 'test';
+const testZxpLoc = path.join(__dirname, '..', 'bin', testZxpName + '.zxp');
 
 describe('zxpSignCmd.verify', function () {
-    var verifyOptions;
+    let verifyOptions;
 
     beforeEach(function () {
         verifyOptions = {
@@ -19,13 +19,13 @@ describe('zxpSignCmd.verify', function () {
         };
     });
 
-    it('Should throw an error because no input is provided', function (done) {
+    it('Should throw an error because no input is provided', async () => {
         verifyOptions.input = null;
-        zxpSignCmd.verify(verifyOptions, function (error, result) {
-
+        try {
+            await zxpSignCmd.verify(verifyOptions);
             expect(error).to.be.an('error');
-            expect(result).to.be.a('undefined');
-            done();
-        });
+        } catch (error) {
+            expect(error).to.be.an('error');
+        }
     });
 });

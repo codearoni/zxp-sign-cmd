@@ -9,18 +9,24 @@
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 ## About
+zxp-sign-cmd provides a simple interface for Adobe's extension signer. zxp-sign-cmd takes care of starting the requires processes, handling errors, and building the output directory if required.
 
-zxp-sign-cmd provides a simple interface for Adobe's extension signer. zxp-sign-cmd takes care of starting the requires processes, handling any errors, and building the output directory if required.
+## Installation
+```bash
+    npm i zxp-sign-cmd -D
+```
 
 ## Usage
 ```javascript
-var zxpSignCmd = require('zxp-sign-cmd');
+const zxpSignCmd = require('zxp-sign-cmd');
 ```
 
 There are functions for all 3 operations: sign, selfSignedCert, and verify.
 Each function takes an options object as its first parameter. See the property tables for the appropriate function below.
-The second parameter is a callback, that takes an error and result argument. The error will always be null if the function succeeds. In the event that an error occurs, an Error object will be returned.
-The result will be a string and will contain the stdout provided by ZXPSignCmd (if the task succeeds). In the event that the task fails, result will be undefined.
+zxp-sign-cmd's latest API uses promises and async functions. If you require a callback-style implementation, please revert to the legacy v1.x.x API. 
+The result will be a string and will contain the stdout provided by ZXPSignCmd (if the task succeeds). In the event that the task fails, an error is thrown.
+If you would like to use the await-style implementation, it is recommended to wrap a try/catch and handle errors that way.
+However, the API does support .then( ) and .catch( ) configurations.
 
 #### sign
 Options
@@ -35,9 +41,7 @@ Options
 
 Example:
 ```javascript
-zxpSignCmd.sign(options, function (error, result) {
-    
-});
+const signResult = await zxpSignCmd.sign(options);
 ```
 
 #### selfSignedCert
@@ -58,9 +62,7 @@ Options
 
 Example:
 ```javascript
-zxpSignCmd.selfSignedCert(options, function (error, result) {
-    
-});
+const certResult = await zxpSignCmd.selfSignedCert(options);
 ```
 
 #### verify
@@ -75,13 +77,9 @@ Options
 
 Example:
 ```javascript
-zxpSignCmd.verify(options, function (error, result) {
-    
-});
+const verifyResult = await zxpSignCmd.verify(options);
 ```
 ## Notes
 * Code coverage is low because the ZXPSignCmd cannot run in the Travis-CI environment. I imagine this is due to an OS compatiblity issue. If you would like to run see more complete code coverage, pull the repo and execute "npm run test".
 
-* zxp-sign-cmd v0.1.0 - ZxpSignCmd v3.0.30
-
-* zxp-sign-cmd v0.2.0 - ZxpSignCmd v4.0.7
+* As of v2.0.0, zxp-sign-cmd uses the latest version as defined by the [zxp-provider API](https://github.com/codearoni/zxp-provider).
