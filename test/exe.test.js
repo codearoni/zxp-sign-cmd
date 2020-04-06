@@ -4,19 +4,19 @@
 * The ZXPSignCmd executable does not function in travis-ci.
 * As a result, the tests that run against the executable are removed from ci-tests
 */
-var path = require('path'),
-    zxpSignCmd = require(path.join(__dirname, '..', 'index.js')),
-    expect = require('chai').expect,
-    testPassword = 'testPs',
-    testCertName = 'testCert',
-    testCertLoc = path.join(__dirname, '..', 'bin', testCertName + '.p12'),
-    testZxpName = 'test',
-    testZxpLoc = path.join(__dirname, '..', 'bin', testZxpName + '.zxp');
+const path = require('path');
+const zxpSignCmd = require(path.join(__dirname, '..', 'index.js'));
+const expect = require('chai').expect;
+const testPassword = 'testPs';
+const testCertName = 'testCert';
+const testCertLoc = path.join(__dirname, '..', 'bin', testCertName + '.p12');
+const testZxpName = 'test';
+const testZxpLoc = path.join(__dirname, '..', 'bin', testZxpName + '.zxp');
 
 describe('zxpSignCmd exe tests', function () {
-    var options,
-        certOptions,
-        verifyOptions;
+    let options;
+    let certOptions;
+    let verifyOptions;
 
     beforeEach(function () {
         options  = {
@@ -38,41 +38,23 @@ describe('zxpSignCmd exe tests', function () {
         };
     });
 
-    it('Should generate a self-signed cert', function (done) {
+    it('Should generate a self-signed cert', async () => {
         certOptions.country = 'us';
-        zxpSignCmd.selfSignedCert(certOptions, function (error, result) {
-
-            expect(error).to.be.a('null');
-            expect(result).to.equal('Self-signed certificate generated successfully\r\n');
-            done();
-        });
+        const result = await zxpSignCmd.selfSignedCert(certOptions);
+        expect(result).to.match(/Self-signed certificate generated successfully/);
     });
 
-    it('Should generate a zxp package using the example extension', function (done) {
-
-        zxpSignCmd.sign(options, function (error, result) {
-            expect(error).to.be.a('null');
-            expect(result).to.equal('Signed successfully\r\n');
-            done();
-        });
+    it('Should generate a zxp package using the example extension', async () => {
+        const result = await zxpSignCmd.sign(options);
+        expect(result).to.match(/Signed successfully/);;
     });
 
-    it('Should verify the packaged zxp', function (done) {
-
-        zxpSignCmd.verify(verifyOptions, function (error, result) {
-
-            expect(error).to.be.a('null');
-            done();
-        });
+    it('Should verify the packaged zxp', async () => {
+        await zxpSignCmd.verify(verifyOptions);
     });
 
-    it('Should add info to the verification', function (done) {
+    it('Should add info to the verification', async () => {
         verifyOptions.info = true;
-
-        zxpSignCmd.verify(verifyOptions, function (error, result) {
-
-            expect(error).to.be.a('null');
-            done();
-        });
+        await zxpSignCmd.verify(verifyOptions);
     });
 });

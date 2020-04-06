@@ -1,22 +1,30 @@
 'use strict';
 
-var zxp = require('zxp-provider').bin,
-    path = require('path'),
-    fs = require('graceful-fs'),
-    exec = require('child_process').exec;
+const util = require('util');
+const path =  require('path');
+const fs = require('fs');
+const exec = util.promisify(require('child_process').exec);
+const mkdir = util.promisify(fs.mkdir);
+const zxpProvider = require('zxp-provider');
+const zxp = zxpProvider();
 
-var insertSpaces = function () {
-    var builtString = '',
-    args = Array.prototype.slice.call(arguments);
+const insertSpaces = function () {
+    let builtString = '';
+    const args = Array.prototype.slice.call(arguments);
 
     args.forEach(function(val) {
         builtString = builtString + val + ' ';
     });
+
     return builtString;
 };
 
-var validateOptions = function (options, requirements) {
-    var err = null;
+const quoteWrap = (str) => {
+    return '"' + str + '"';
+};
+
+const validateOptions = (options, requirements) => {
+    let err = null;
     requirements.forEach(function (req) {
         if(!options[req]) {
             err = new Error(req + ' property is required');
@@ -25,69 +33,54 @@ var validateOptions = function (options, requirements) {
     return err;
 };
 
-var buildOutputPath = function (output, callback) {
-    fs.mkdir(path.dirname(output), function (error) {
-        if (error) {
-            if (error.code === 'EEXIST') {
-                callback(null);
-            } else {
-                callback(error);
-            }
+const buildOutputPath = async (output) => {
+    
+    const dirPath = path.dirname(output);
+    try {
+        await mkdir(dirPath, { recursive: true });
+    } catch (error) {
+        if (error && error.code === 'EEXIST') {
+            return null;
         } else {
-            callback(null);
+            throw error;
         }
-    });
+    }
 };
 
 module.exports = {
-    sign: function (options, callback) {
-        var cbError = null,
-            cmd;
+    sign: async (options) => {
 
-        cbError = validateOptions(options, ['input', 'output', 'cert', 'password']);
+        // validate params
+        const inputError = validateOptions(options, ['input', 'output', 'cert', 'password']);
 
-        if (cbError) {
-            callback(cbError);
-            return;
+        if (inputError) {
+            throw inputError;
         }
 
-        cmd = insertSpaces(zxp, '-sign', options.input, options.output, options.cert, options.password);
+        const input = quoteWrap(options.input);
+        const output = quoteWrap(options.output);
+        const cert = quoteWrap(options.cert);
+        let cmd = insertSpaces(zxp, '-sign', input, output, cert, quoteWrap(options.password));
 
         if (options.timestamp) {
             cmd = insertSpaces(cmd, '-tsa', options.timestamp);
         }
 
-        buildOutputPath(options.output, function (error) {
-            if (error) {
-                callback(error);
-                return;
-            } else {
-                exec(cmd, function (error, stdout, stderr) {
-                    if (error) {
-                        callback(error);
-                        return;
-                    }
-                    if (stderr) {
-                        console.log(stderr);
-                    }
+        // do not use the quote-wrapped parameter to build a directory
+        await buildOutputPath(options.output);
 
-                    callback(null, stdout);
-                });
-            }
-        });
+        const result = await exec(cmd);
+        return result.stdout || null;
     },
-    selfSignedCert: function (options, callback) {
-        var cbError = null,
-            cmd;
+    selfSignedCert: async (options) => {
 
-        cbError = validateOptions(options, ['country', 'province', 'org', 'name', 'password', 'output']);
+        const inputError = validateOptions(options, ['country', 'province', 'org', 'name', 'password', 'output']);
 
-        if (cbError) {
-            callback(cbError);
-            return;
+        if (inputError) {
+            throw inputError;
         }
 
-        cmd = insertSpaces(zxp, '-selfSignedCert', options.country, options.province, options.org, options.name, options.password, options.output);
+        let cmd = insertSpaces(zxp, '-selfSignedCert', quoteWrap(options.country), quoteWrap(options.province), quoteWrap(options.org), quoteWrap(options.name), quoteWrap(options.password), quoteWrap(options.output));
 
         if (options.locality) {
             cmd = insertSpaces(cmd, '-locality', options.locality);
@@ -102,37 +95,22 @@ module.exports = {
             cmd = insertSpaces(cmd, '-validityDays', options.validityDays);
         }
 
-        buildOutputPath(options.output, function (error) {
-            if (error) {
-                callback(error);
-                return;
-            } else {
-                exec(cmd, function (error, stdout, stderr) {
-                    if (error) {
-                        callback(error);
-                        return;
-                    }
-                    if (stderr) {
-                        console.log(stderr);
-                    }
+        // do not use the quote-wrapped parameter to build a directory
+        await buildOutputPath(options.output);
 
-                    callback(null, stdout);
-                });
-            }
-        });
+        const result = await exec(cmd);
+        return result.stdout || null;
     },
-    verify: function (options, callback) {
-        var cbError = null,
-            cmd;
+    verify: async (options) => {
 
-        cbError = validateOptions(options, ['input']);
+        const inputError = validateOptions(options, ['input']);
 
-        if (cbError) {
-            callback(cbError);
-            return;
+        if (inputError) {
+            throw inputError;
         }
 
-        cmd = insertSpaces(zxp, '-verify', options.input);
+        const input = quoteWrap(options.input);
+        let cmd = insertSpaces(zxp, '-verify', input);
 
         if (options.info) {
             cmd = insertSpaces(cmd, '-certInfo');
@@ -144,16 +122,7 @@ module.exports = {
             cmd = insertSpaces(cmd, '-addCerts', options.addCerts);
         }
 
-        exec(cmd, function (error, stdout, stderr) {
-            if (error) {
-                callback(error);
-                return;
-            }
-            if (stderr) {
-                console.log(stderr);
-            }
-
-            callback(null, stdout);
-        });
+        const result = await exec(cmd);
+        return result.stdout || null;
     }
 };
